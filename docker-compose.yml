@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:11
+    ports:
+      - "9432:5432"
+    networks:
+      - listmonk
+    environment:
+      - POSTGRES_PASSWORD=listmonk
+      - POSTGRES_USER=listmonk
+      - POSTGRES_DB=listmonk
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: listmonk-data
+        target: /var/lib/postgresql/data
+
+  app:
+    restart: unless-stopped
+    build: listmonk
+    ports:
+      - "9001:9000"
+    networks:
+      - listmonk
+    depends_on:
+      - db
+  # postfix:
+  #   image: juanluisbaptiste/postfix:latest
+  #   expose:
+  #   - "25"
+  #   env_file:
+  #     - .env
+  #   restart: always
+  #   networks:
+  #     - listmonk
+
+networks:
+  listmonk:
+
+volumes:
+  listmonk-data:
