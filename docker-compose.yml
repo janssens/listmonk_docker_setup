@@ -26,6 +26,8 @@ services:
       - listmonk
     depends_on:
       - db
+    volumes:
+      - /var/www/listmonk/uploads:/listmonk/uploads:rw
   # postfix:
   #   image: juanluisbaptiste/postfix:latest
   #   expose:
